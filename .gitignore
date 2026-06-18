@@ -1,0 +1,6 @@
+# Ignore local secrets and runtime databases
+secrets.yaml
+*.db
+*.db-shm
+*.db-wal
+.HA_VERSION

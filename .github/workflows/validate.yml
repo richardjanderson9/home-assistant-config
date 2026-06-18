@@ -1,0 +1,25 @@
+name: Validate Configuration
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Create Dummy Secrets for CI
+      run: |
+        echo "homeassistant_username: ci_test_user" > secrets.yaml
+        echo "homeassistant_password: ci_test_password" >> secrets.yaml
+
+    - name: Home Assistant Core Configuration Check
+      uses: frenck/action-home-assistant@v1
+      with:
+        path: "."
+        version: "stable"
