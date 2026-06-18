@@ -13,10 +13,26 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # === STAGE 1: Verify Secrets Exist ===
     - name: Verify GitHub Secrets Availability
       run: |
-        echo "=== Checking Repository Secrets ==="
+        echo "=== [STAGE 1] Checking Repository Secrets ==="
         if [ -n "${{ secrets.DNS_NAME }}" ]; then echo "DNS_NAME is detected."; else echo "ERROR: DNS_NAME is missing."; exit 1; fi
         if [ -n "${{ secrets.SECURE_TOKEN1 }}" ]; then echo "SECURE_TOKEN1 is detected."; else echo "ERROR: SECURE_TOKEN1 is missing."; exit 1; fi
         if [ -n "${{ secrets.SECURE_TOKEN2 }}" ]; then echo "SECURE_TOKEN2 is detected."; else echo "ERROR: SECURE_TOKEN2 is missing."; exit 1; fi
         if [ -n "${{ secrets.SECURITY_BYPASS }}" ]; then echo "SECURITY_BYPASS is detected."; else echo "ERROR: SECURITY_BYPASS is missing."; exit 1; fi
+
+    # === STAGE 2: Cloudflare Connectivity and Dynamic Path Check ===
+    - name: Send Request to Cloudflare
+      run: |
+        echo "=== [STAGE 2] Sending Request to Dynamic Cloudflare Path ==="
+        
+        # Constructs the URL by placing the secret value directly into the path string
+        TARGET_URL="https://${{ secrets.DNS_NAME }}/${{ secrets.SECURITY_BYPASS }}"
+        
+        # Sends a POST request to the dynamic hidden endpoint
+        curl -f -X POST \
+          -H "Authorization: Bearer ${{ secrets.SECURE_TOKEN1 }}" \
+          -H "Content-Type: application/json" \
+          -d '{"status": "ci_pipeline_validated"}' \
+          "$TARGET_URL"
