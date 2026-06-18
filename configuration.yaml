@@ -1,12 +1,3 @@
 default_config:
 
 automation: !include automations.yaml
-
-panel_custom:
-  - name: homeassistant_local
-    sidebar_title: Home Assistant
-    sidebar_icon: mdi:home-assistant
-    url_path: local_ui
-    config:
-      username: !secret homeassistant_username
-      password: !secret homeassistant_password

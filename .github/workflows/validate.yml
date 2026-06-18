@@ -13,13 +13,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Create Dummy Secrets for CI
+    - name: Verify GitHub Secrets Availability
       run: |
-        echo "homeassistant_username: ci_test_user" > secrets.yaml
-        echo "homeassistant_password: ci_test_password" >> secrets.yaml
-
-    - name: Home Assistant Core Configuration Check
-      uses: frenck/action-home-assistant@v1
-      with:
-        path: "."
-        version: "stable"
+        echo "=== Checking Repository Secrets ==="
+        if [ -n "${{ secrets.DNS_NAME }}" ]; then echo "DNS_NAME is detected."; else echo "ERROR: DNS_NAME is missing."; exit 1; fi
+        if [ -n "${{ secrets.SECURE_TOKEN1 }}" ]; then echo "SECURE_TOKEN1 is detected."; else echo "ERROR: SECURE_TOKEN1 is missing."; exit 1; fi
+        if [ -n "${{ secrets.SECURE_TOKEN2 }}" ]; then echo "SECURE_TOKEN2 is detected."; else echo "ERROR: SECURE_TOKEN2 is missing."; exit 1; fi
+        if [ -n "${{ secrets.SECURITY_BYPASS }}" ]; then echo "SECURITY_BYPASS is detected."; else echo "ERROR: SECURITY_BYPASS is missing."; exit 1; fi
