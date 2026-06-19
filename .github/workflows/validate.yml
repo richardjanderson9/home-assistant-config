@@ -13,30 +13,24 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # === STAGE 1: Verify All Secrets Exist ===
-    - name: Verify GitHub Secrets Availability
+    - name: 🚀 Trigger Home Assistant (via Cloudflare) 🚀
       run: |
-        echo "=== [STAGE 1] Checking Repository Secrets ==="
-        if [ -n "${{ secrets.DNS_NAME }}" ]; then echo "DNS_NAME detected."; else echo "ERROR: DNS_NAME missing."; exit 1; fi
-        if [ -n "${{ secrets.SECURE_TOKEN1 }}" ]; then echo "SECURE_TOKEN1 detected."; else echo "ERROR: SECURE_TOKEN1 missing."; exit 1; fi
-        if [ -n "${{ secrets.SECURE_TOKEN2 }}" ]; then echo "SECURE_TOKEN2 detected."; else echo "ERROR: SECURE_TOKEN2 missing."; exit 1; fi
-        if [ -n "${{ secrets.SECURITY_BYPASS }}" ]; then echo "SECURITY_BYPASS detected."; else echo "ERROR: SECURITY_BYPASS missing."; exit 1; fi
-        if [ -n "${{ secrets.SECURITY_BYPASS2 }}" ]; then echo "SECURITY_BYPASS2 detected."; else echo "ERROR: SECURITY_BYPASS2 missing."; exit 1; fi
-
-    # === STAGE 2: Cloudflare Connectivity ===
-    - name: Send Request to Cloudflare
-      run: |
-        echo "=== [STAGE 2] Sending Authenticated Request ==="
+        # Builds the target URL using secrets for DNS name and automation path.
+        TARGET_URL="https://${{ secrets.DNS_NAME }}/${{ secrets.AUTOMATION_PATH }}"
         
-        # Build the dynamic URL using your secrets
-        TARGET_URL="https://${{ secrets.DNS_NAME }}/${{ secrets.SECURITY_BYPASS }}"
-        
-        # Execute curl
+        # Executes the request with the specific Home Assistant and Cloudflare tokens
         HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-          -H "X-Security-Signature: ${{ secrets.SECURITY_BYPASS2 }}" \
           -H "Authorization: Bearer ${{ secrets.SECURE_TOKEN1 }}" \
+          -H "security_bypass: ${{ secrets.SECURITY_BYPASS }}" \
+          -H "security_bypass2: ${{ secrets.SECURITY_BYPASS2 }}" \
           -H "Content-Type: application/json" \
-          -d '{"status": "ci_pipeline_validated"}' \
+          -d '{"status": "success"}' \
           "$TARGET_URL")
         
-        echo "Cloudflare returned HTTP status: $HTTP_STATUS"
+        echo "HTTP status: $HTTP_STATUS"
+        
+        # Fail the action if the request is NOT exactly 200
+        if [ "$HTTP_STATUS" -ne 200 ]; then
+          exit 1
+        fi
+        
