@@ -3,8 +3,14 @@ name: Validate Configuration
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'automations/**'
+      - 'scripts/**'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'automations/**'
+      - 'scripts/**'
 
 jobs:
   validate:
@@ -33,4 +39,3 @@ jobs:
         if [ "$HTTP_STATUS" -ne 200 ]; then
           exit 1
         fi
-        

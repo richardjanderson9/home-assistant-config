@@ -1,3 +1,0 @@
-default_config:
-
-automation: !include automations.yaml
