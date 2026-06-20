@@ -1,0 +1,49 @@
+{
+  "account": "richardjanderson9",
+  "base_source": "github.com",
+  "linux_user": "",
+  "repositories": [
+    {
+      "id": 1,
+      "name": "HA: Security Config",
+      "description": "Security configuration for Home Assistant, including automations, scripts, and templates.",
+      "known_as": "",
+      "my_repository": true
+    },
+    {
+      "id": 2,
+      "name": "HA: Voice Patterns (English)",
+      "description": "Voice patterns for Home Assistant (English), including intents, utterances, and voice commands.",
+      "known_as": "",
+      "voice_patterns": [
+        "England",
+        "Scotland",
+        "America (Largest four states (California, Texas, Florida, New York))"
+      ],
+      "my_repository": true
+    },
+    {
+      "id": 3,
+      "name": "HA: Voice Patterns (German)",
+      "description": "Voice patterns for Home Assistant (German), including intents, utterances, and voice commands.",
+      "known_as": "",
+      "voice_patterns": [
+        "Berlin",
+        "München",
+        "Frankfurt"        
+      ],
+      "my_repository": true
+    },
+    {
+      "id": 4,
+      "name": "HA: Voice Patterns (Alternative)",
+      "description": "Voice patterns for Home Assistant (Alternative), including intents, utterances, and voice commands.",
+      "known_as": "",
+      "voice_patterns": [
+        "Español (Spain)",
+        "Français (France)"
+      ],
+      "my_repository": true
+    }
+  ]
+}

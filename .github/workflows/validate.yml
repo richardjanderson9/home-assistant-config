@@ -19,7 +19,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: 🚀 Trigger Home Assistant (via Cloudflare) 🚀
+    - name: 🚀 Trigger Home Assistant (via cloudflare Tunnel) 🚀
       run: |
         # Builds the target URL using secrets for DNS name and automation path.
         TARGET_URL="https://${{ secrets.DNS_NAME }}/${{ secrets.AUTOMATION_PATH }}"
